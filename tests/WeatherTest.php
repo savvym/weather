@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of savvym/weather.
+ *
+ * (c) savvym <savvy.chn@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Savvym\Weather\Tests;
 
 use GuzzleHttp\Psr7\Response;
@@ -12,7 +21,6 @@ use Savvym\Weather\Exceptions\InvalidArgumentException;
 
 class WeatherTest extends TestCase
 {
-
     // 检查$type参数
     public function testGetWeatherWithInvalidType()
     {
@@ -24,7 +32,7 @@ class WeatherTest extends TestCase
 
         $w->getWeather('深圳', 'foo');
 
-        $this->fail("Failed to assert getWeather throw exception with invalid argument.");
+        $this->fail('Failed to assert getWeather throw exception with invalid argument.');
     }
 
     // 检查$format参数
@@ -39,7 +47,7 @@ class WeatherTest extends TestCase
 
         $w->getWeather('深圳', 'forecast', 'array');
 
-        $this->fail("Failed to assert getWeather throw exception with invalid argument.");
+        $this->fail('Failed to assert getWeather throw exception with invalid argument.');
     }
 
     public function testGetWeather()
@@ -56,10 +64,10 @@ class WeatherTest extends TestCase
                 'city' => '深圳',
                 'output' => 'json',
                 'extensions' => 'base',
-            ]
+            ],
         ])->andReturn($response);
 
-        $w  = \Mockery::mock(Weather::class, ['mock-key'])->makePartial();
+        $w = \Mockery::mock(Weather::class, ['mock-key'])->makePartial();
         $w->allows()->getHttpClient()->andReturn($client);
 
         $this->assertSame(['success' => true], $w->getWeather('深圳'));
@@ -74,19 +82,18 @@ class WeatherTest extends TestCase
                 'city' => '深圳',
                 'output' => 'xml',
                 'extensions' => 'all',
-            ]
+            ],
         ])->andReturn($response);
-        $w  = \Mockery::mock(Weather::class, ['mock-key'])->makePartial();
+        $w = \Mockery::mock(Weather::class, ['mock-key'])->makePartial();
         $w->allows()->getHttpClient()->andReturn($client);
         $this->assertSame('<hello>content</hello>', $w->getWeather('深圳', 'forecast', 'xml'));
     }
-
 
     public function testGetWeatherWithGuzzleRuntimeException()
     {
         $client = \Mockery::mock(Client::class);
         $client->allows()->get(new AnyArgs())->andThrow(new \Exception('request timeout'));
-        $w  = \Mockery::mock(Weather::class, ['mock-key'])->makePartial();
+        $w = \Mockery::mock(Weather::class, ['mock-key'])->makePartial();
         $w->allows()->getHttpClient()->andReturn($client);
 
         $this->expectException(\Exception::class);
@@ -123,4 +130,3 @@ class WeatherTest extends TestCase
         $this->assertSame(['success' => true], $w->getForecastWeather('深圳'));
     }
 }
-

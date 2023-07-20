@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of savvym/weather.
+ *
+ * (c) savvym <savvy.chn@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Savvym\Weather;
 
 use GuzzleHttp\Client;
@@ -10,7 +19,6 @@ class Weather
 {
     protected $key;
     protected $guzzleOptions = [];
-
 
     public function __construct(string $key)
     {
@@ -37,11 +45,11 @@ class Weather
         ];
 
         if (!\in_array(\strtolower($format), ['xml', 'json'])) {
-            throw new InvalidArgumentException('Invalid response format: ' . $format);
+            throw new InvalidArgumentException('Invalid response format: '.$format);
         }
 
         if (!\array_key_exists(\strtolower($type), $types)) {
-            throw new InvalidArgumentException('Invalid type value(live/forecast): ' . $type);
+            throw new InvalidArgumentException('Invalid type value(live/forecast): '.$type);
         }
 
         $query = array_filter([
@@ -54,7 +62,8 @@ class Weather
             $response = $this->getHttpClient()->get($url, [
                 'query' => $query,
             ])->getBody()->getContents();
-            return $format === 'json' ? json_decode($response, true) : $response;
+
+            return 'json' === $format ? json_decode($response, true) : $response;
         } catch (\Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
@@ -69,5 +78,4 @@ class Weather
     {
         return $this->getWeather($city, 'forecast', $format);
     }
-
 }
