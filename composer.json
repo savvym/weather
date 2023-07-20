@@ -1,0 +1,32 @@
+{
+    "name": "savvym/weather",
+    "description": "First extension package",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Savvym\\Weather\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zhhdzhang",
+            "email": "zhhdzhang@tencent.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.2",
+        "mockery/mockery": "^1.6",
+        "laravel/framework": "^10.15"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Savvym\\Weather\\ServiceProvider"
+            ]
+        }
+    }
+}
