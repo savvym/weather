@@ -27,23 +27,28 @@ class Weather
         return new Client($this->guzzleOptions);
     }
 
-    public function getWeather(string $city, string $type = 'base', string $format = 'json')
+    public function getWeather(string $city, string $type = 'live', string $format = 'json')
     {
         $url = 'https://restapi.amap.com/v3/weather/weatherInfo';
+
+        $types = [
+            'live' => 'base',
+            'forecast' => 'all',
+        ];
 
         if (!\in_array(\strtolower($format), ['xml', 'json'])) {
             throw new InvalidArgumentException('Invalid response format: ' . $format);
         }
 
-        if (!\in_array(\strtolower($type), ['base', 'all'])) {
-            throw new InvalidArgumentException('Invalid type value(base/all): ' . $type);
+        if (!\array_key_exists(\strtolower($type), $types)) {
+            throw new InvalidArgumentException('Invalid type value(live/forecast): ' . $type);
         }
 
         $query = array_filter([
             'key' => $this->key,
             'city' => $city,
             'output' => $format,
-            'extensions' => $type,
+            'extensions' => $types[$type],
         ]);
         try {
             $response = $this->getHttpClient()->get($url, [
@@ -53,6 +58,16 @@ class Weather
         } catch (\Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    public function getLiveWeather(string $city, string $format = 'json')
+    {
+        return $this->getWeather($city, 'live', $format);
+    }
+
+    public function getForecastWeather(string $city, string $format = 'json')
+    {
+        return $this->getWeather($city, 'forecast', $format);
     }
 
 }
