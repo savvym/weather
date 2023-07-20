@@ -1,6 +1,8 @@
 <h1 align="center">Weather Demo</h1>
 <p align="center">:rainbow: 基于高德开放平台的 PHP 天气信息组件Demo</p>
 
+[![Tests](https://github.com/savvym/weather/actions/workflows/tests.yml/badge.svg)](https://github.com/savvym/weather/actions/workflows/tests.yml)
+![StyleCI build status](https://github.styleci.io/repos/668553666/shield) 
 ## 安装
 ```bash
 $ composer require savvym/weather -vvv
