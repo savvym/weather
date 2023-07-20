@@ -1,5 +1,5 @@
-# Weather-Demo
-基于[高德开放平台](https://lbs.amap.com/dev/id/newuser)的PHP天气信息组件练习Demo
+<h1 align="center">Weather Demo</h1>
+<p align="center">:rainbow: 基于高德开放平台的 PHP 天气信息组件Demo</p>
 ## 安装
 ```bash
 $ composer require savvym/weather -vvv
